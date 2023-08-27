@@ -8,29 +8,15 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // noinspection JSUnusedGlobalSymbols
-L.Control.Watermark = L.Control.extend({  //download-button
+new (L.Control.extend({
     onAdd: function(_map) {
-        const div = L.DomUtil.create('div');
-        div.innerHTML = "Share: 🛰️ | Receive: 🔗"
-        div.style.fontSize = "64px"
-        div.style.background = 'white';
-        div.style.cursor = 'pointer';
-        div.onclick = () => { alert("Share: 🛰️ | Receive: 🔗") }
-
-        L.DomEvent.on(div, 'click', this._download, this);  //_download
-        L.DomEvent.disableClickPropagation(div)
-
-        return div;
+        const button = document.createElement('button');
+        button.innerHTML = "🛰️"
+        button.style.fontSize = "48px"
+        button.style.padding = '0px 10px';
+        button.style.background = 'white';
+        button.style.cursor = 'pointer';
+        button.onclick = () => { alert("Locate & Share...") }
+        return button;
     },
-    _download: function(ev) {  //console.log(this._map._layers)  //must be named mytrack!
-        if('msSaveOrOpenBlob' in navigator) navigator.msSaveOrOpenBlob(new Blob([JSON.stringify(mytrack.gpx)]),"mytrack.json");  //L.mytrack???
-        else ev.target.href="data:application/geo+json,"+JSON.stringify(mytrack.gpx)
-    }
-    //, onRemove: function(map) { }   // Nothing to do here
-});
-
-L.control.watermark = function(opts) {
-    return new L.Control.Watermark(opts);
-}
-
-L.control.watermark({ position: 'topright' }).addTo(map);
+}))({"position": "topright"}).addTo(map);
