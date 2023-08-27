@@ -1,0 +1,22 @@
+{
+  "name": "share-live-location",
+  "description": "An easy way to share your live location",
+  "version": "1.0.0",
+  "license": "MIT OR Apache-2.0",
+  "source": "src/index.html",
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "parcel": "^2.9.3"
+  }
+}

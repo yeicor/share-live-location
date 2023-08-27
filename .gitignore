@@ -1,0 +1,7 @@
+# IDE
+/.idea/
+
+# Javascript
+/node_modules/
+/dist/
+/.parcel-cache/
