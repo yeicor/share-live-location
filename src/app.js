@@ -7,12 +7,15 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+// noinspection JSUnusedGlobalSymbols
 L.Control.Watermark = L.Control.extend({  //download-button
-    onAdd: function(map) {
+    onAdd: function(_map) {
         const div = L.DomUtil.create('div');
-        div.innerHTML = "Share: 📡 | Receive: 🔗"
+        div.innerHTML = "Share: 🛰️ | Receive: 🔗"
         div.style.fontSize = "64px"
         div.style.background = 'white';
+        div.style.cursor = 'pointer';
+        div.onclick = () => { alert("Share: 🛰️ | Receive: 🔗") }
 
         L.DomEvent.on(div, 'click', this._download, this);  //_download
         L.DomEvent.disableClickPropagation(div)
