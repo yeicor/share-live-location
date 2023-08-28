@@ -3,9 +3,16 @@
 <head>
     <meta charset="utf-8"/>
     <title>Share Live Location</title>
-    <script type="module" src="./app.js"></script>
+    <script src="./app.ts" type="module"></script>
 </head>
 <body style="margin: 0">
 <div id="map" style="height: 100vh"></div>
+<div id="share-widget" style="display: none;">
+    <button id="share-button" style="cursor:pointer;font-size: 48px;padding: 0 10px" title="Share">🛰️</button>
+    <div id="share-settings" style="display: none"></div> <!-- TODO: Custom config -->
+    <div id="share-link" style=""></div> <!-- TODO: Show the share link -->
+    <div id="open-location-link" style=""></div> <!-- TODO: Link to open current location in maps app -->
+    <div id="receive-status" style=""></div> <!-- TODO: Show receive status (last update) -->
+</div>
 </body>
 </html>
