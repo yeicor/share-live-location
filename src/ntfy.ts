@@ -1,3 +1,5 @@
+import {MyLocationEvent} from "./locationEvent";
+
 function randomId(size: number) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let id = "";
@@ -5,16 +7,6 @@ function randomId(size: number) {
         id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return id;
-}
-
-type MyLocationEvent = {
-    latlng: { lat: number, lng: number },
-    accuracy: number,
-    altitude: number | null,
-    altitudeAccuracy: number | null,
-    heading: number | null,
-    speed: number | null,
-    timestamp: number,
 }
 
 export class NtfyShare {
@@ -32,16 +24,7 @@ export class NtfyShare {
      * @param locEv The location to publish.
      */
     publish(locEv: MyLocationEvent) {
-        let msg = { // Drop unwanted fields
-            latlng: locEv.latlng,
-            accuracy: locEv.accuracy,
-            altitude: locEv.altitude,
-            altitudeAccuracy: locEv.altitudeAccuracy,
-            heading: locEv.heading,
-            speed: locEv.speed,
-            timestamp: locEv.timestamp,
-        } as MyLocationEvent
-        let bodyJson = JSON.stringify(msg)
+        let bodyJson = JSON.stringify(locEv)
         let url = this.host + "/" + this.id
         console.log(url, "sending body of length", bodyJson.length);
         fetch(url, {method: "POST", body: bodyJson}).then((response) => {

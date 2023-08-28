@@ -14,10 +14,10 @@
     "build": "parcel build"
   },
   "dependencies": {
-    "leaflet": "^1.9.4",
-    "jsonlines-web": "^1.2.1"
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.3",
     "buffer": "^5.5.0||^6.0.0",
     "events": "^3.1.0",
     "os-browserify": "^0.3.0",
@@ -26,7 +26,6 @@
     "process": "^0.11.10",
     "tty-browserify": "^0.0.1",
     "url": "^0.11.0",
-    "util": "^0.12.3",
-    "@types/leaflet": "^1.9.3"
+    "util": "^0.12.3"
   }
 }

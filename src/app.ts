@@ -1,6 +1,20 @@
-import {circle, Control, latLng, LatLng, map, polyline, tileLayer} from 'leaflet';
+import {
+    circle,
+    Control,
+    latLng,
+    LatLng,
+    Layer,
+    layerGroup,
+    LayerGroup,
+    map,
+    Marker,
+    Path,
+    polyline,
+    tileLayer
+} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {NtfyShare} from "./ntfy";
+import {myLocationEvent} from "./locationEvent";
 
 const myMap = map('map').setView([0, 0], 1.33);
 
@@ -21,8 +35,8 @@ new (Control.extend({
 // Location found events are emitted both when sharing and when receiving!
 let locCircle = circle(latLng(0, 0), {radius: 2}).addTo(myMap);
 let accCircle = circle(latLng(0, 0)).addTo(myMap);
-let trailPath = []
-const trailHistory = 1000
+let trailPath: LayerGroup[] = []
+const trailHistory = 10_000
 const trailOpacity = (index: number) => 0.75 - 0.5 * (index / trailHistory) ** 1.25
 let trailPathPrevLoc: LatLng | null = null;
 myMap.addEventListener('locationfound', (e) => {
@@ -33,18 +47,27 @@ myMap.addEventListener('locationfound', (e) => {
         circle.setLatLng(e.latlng)
     });
     accCircle.setRadius(e.accuracy);
-    locCircle.addTo(myMap);
 
     // Set view to latest location
-    myMap.setView(e.latlng);
+    if (myMap.getZoom() < 2) myMap.setView(e.latlng, 16); else myMap.setView(e.latlng);
 
     // Render trail
-    // TODO: Add markers with timestamps, speed, etc.
+    let pathElems: Layer[] = []
+    let infoMarker = circle(e.latlng, {radius: 2, fillOpacity: 1, fill: true, fillColor: "#000"})
+        .bindPopup("<pre>" + JSON.stringify(myLocationEvent(e), undefined, 4) + "</pre>")
+        .addTo(myMap);
+    pathElems.push(infoMarker)
     if (trailPathPrevLoc != null) {
-        trailPath.push(polyline([trailPathPrevLoc, e.latlng]).addTo(myMap))
-        if (trailPath.length > trailHistory) trailPath.shift()?.remove();
-        trailPath.forEach((path, i) => path.setStyle({opacity: trailOpacity(i)}))
+        let line = polyline([trailPathPrevLoc, e.latlng]).addTo(myMap);
+        pathElems.push(line)
     }
+    trailPath.push(layerGroup(pathElems))
+    if (trailPath.length > trailHistory) trailPath.shift()?.remove();
+    trailPath.forEach((layers, i) => layers.getLayers().forEach((layer) => {
+        if (layer instanceof Path) layer.setStyle({opacity: trailOpacity(i)})
+        else if (layer instanceof Marker) layer.setOpacity(trailOpacity(i))
+        else console.warn("Unknown layer type to set opacity: ", layer)
+    }))
     trailPathPrevLoc = e.latlng;
 })
 
@@ -60,7 +83,6 @@ if (fullUrl.hash.startsWith("#")) {
         console.error("Failed to parse auto-config URL: ", e);
     }
 }
-console.debug("Auto-config URL: ", autoConfigUrl);
 let canShare = true
 let isReceiving = false
 let shareHost = autoConfigUrl?.searchParams?.get("host")
@@ -90,7 +112,7 @@ shareButton.onclick = () => {
     myMap.locate({watch: true});
     // Start publishing on location found
     console.debug("Publishing location on location found")
-    myMap.addEventListener('locationfound', (e) => ntfyShare.publish(e));
+    myMap.addEventListener('locationfound', (e) => ntfyShare.publish(myLocationEvent(e)));
 }
 
 // Set up receiving (if configured to receive)
