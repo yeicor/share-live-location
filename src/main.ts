@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import {setupLocationListener} from "./listener";
+import {setupLocationListener} from "./track";
 import {createMap} from "./map";
 import {setupWidget} from "./widget";
 import {setupConfig} from "./config";

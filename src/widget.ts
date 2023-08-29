@@ -2,11 +2,6 @@ import {AppConfig} from "./config";
 import {Map} from "leaflet";
 import {myLocationEvent, MyLocationEvent} from "./event";
 
-function getRelativeTime(t1, t2 = new Date().getTime()) {
-    let number = Math.round((t1 - t2) / 1000);
-    return Math.abs(number) + "s" + (number <= 0 ? " ago" : "");
-}
-
 export function setupWidget(myMap: Map, appConfig: AppConfig) {
     const widgetStatus = document.getElementById("main-widget-status")! as HTMLDivElement;
     const widgetStatus2 = document.getElementById("main-widget-status-2")! as HTMLDivElement;
@@ -15,7 +10,7 @@ export function setupWidget(myMap: Map, appConfig: AppConfig) {
 
 
     let baseUrl = new URL(location.href);
-    baseUrl.hash = "#r?id=" + appConfig.ntfy.id + "&host=" + appConfig.ntfy.host;
+    baseUrl.hash = "#receive?id=" + appConfig.ntfy.topic + "&host=" + appConfig.ntfy.host;
     widgetLink.href = baseUrl.toString()
     if (appConfig.isSharing) {
         widgetStatus.innerText = "Sharing location...";
@@ -26,11 +21,16 @@ export function setupWidget(myMap: Map, appConfig: AppConfig) {
     let lastEvent: MyLocationEvent | null = null;
     const updateWidgetStatus2 = () => {
         if (lastEvent == null) widgetStatus2.innerText = "No location received yet";
-        else widgetStatus2.innerText = "Updated " + getRelativeTime(lastEvent.timestamp);
+        else {
+            let deltaSecs = Math.round((Date.now() - lastEvent.timestamp) / 1000);
+            widgetStatus2.innerHTML = "Updated " + deltaSecs + "s ago";
+            let spanClass = deltaSecs > 60 ? "text-danger" : "text-muted";
+            widgetStatus2.classList.add(spanClass);
+        }
     }
     setInterval(updateWidgetStatus2, 1000);
     myMap.addEventListener('locationfound', (e) => {
         lastEvent = myLocationEvent(e);
-        widgetOpenMap.href = "geo:" + e.latlng.lat + "," + e.latlng.lng;
+        widgetOpenMap.href = "https://www.google.com/maps/search/?api=1&query=" + e.latlng.lat + "%2C" + e.latlng.lng;
     })
 }

@@ -4,14 +4,35 @@
     <meta charset="utf-8"/>
     <title>Share Live Location</title>
     <script src="./main.ts" type="module"></script>
+    <link rel="stylesheet" href="./main.css">
 </head>
-<body style="margin: 0">
-<div id="map" style="height: 100vh"></div>
-<div id="main-widget" style="display: none; background: black; padding: 10px;">
+<body>
+<form id="setup-form">
+    <div id="setup-share-or-receive">
+        <div id="setup-form-share" class="button selected">Share</div>
+        or
+        <div id="setup-form-receive" class="button">Receive</div>
+    </div>
+    <span class="setup-form-info" style="font-size: 0.8em; margin-top: 0.2em"> Optional configuration:</span>
+    <div id="setup-ntfy">
+        <label for="setup-form-ntfy-host"><a href="https://ntfy.sh">Ntfy</a> host:</label>
+        <input type="text" id="setup-form-ntfy-host" value="https://ntfy.sh">
+        <div class="break"></div>
+        <label for="setup-form-ntfy-topic">Ntfy topic:</label>
+        <input type="text" id="setup-form-ntfy-topic" placeholder="Random if empty">
+    </div>
+    <div id="setup-form-submit" class="button">START</div>
+    <p class="setup-form-info">
+        Note: you can automate setup configuration adding the following to the URL:
+        <cite>#&lt;receive/share&gt;?host=&lt;Ntfy host&gt;&id=&lt;Share id&gt;</cite>
+    </p>
+</form>
+<div id="map"></div>
+<div id="main-widget">
     <div id="main-widget-status"></div>
     <div id="main-widget-status-2"></div>
     <div><a id="main-widget-link" target="_blank">Share link</a></div>
-    <div><a id="main-widget-open-map">Open last location</a></div>
+    <div><a id="main-widget-open-map" target="_blank">Open in Google Maps</a></div>
 </div>
 </body>
 </html>
