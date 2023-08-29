@@ -1,4 +1,4 @@
-import {MyLocationEvent} from "./locationEvent";
+import {MyLocationEvent} from "./event";
 
 function randomId(size: number) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -9,7 +9,7 @@ function randomId(size: number) {
     return id;
 }
 
-export class NtfyShare {
+export class Ntfy {
     host: string;
     id: string;
 

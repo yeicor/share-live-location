@@ -14,6 +14,7 @@
     "build": "parcel build"
   },
   "dependencies": {
+    "alertifyjs": "^1.13.1",
     "leaflet": "^1.9.4"
   },
   "devDependencies": {
