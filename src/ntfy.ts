@@ -32,7 +32,7 @@ export class Ntfy {
         fetch(url, {method: "POST", body: bodyJson}).then((response) => {
             if (!response.ok) {
                 console.error("Failed to publish location: ", response)
-                alertify.error("Failed to publish location: " + response)
+                alertify.error("Failed to publish location: " + response.status + " " + response.statusText)
             }
         })
     }
