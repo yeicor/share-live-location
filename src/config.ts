@@ -54,7 +54,7 @@ export async function setupConfig(): Promise<AppConfig> {
         try {
             let autoConfigUrlStr = fullUrl.hash.substring(1);
             console.debug("Auto-config URL: ", autoConfigUrlStr);
-            autoConfigUrl = new URL(autoConfigUrlStr, window.location.href);
+            autoConfigUrl = new URL(autoConfigUrlStr, "https://example.com/");
         } catch (e) {
             console.error("Failed to parse auto-config URL: ", e);
             alertify.error("Failed to parse auto-config URL: " + e);
