@@ -33,12 +33,12 @@ function setupConfigDialog(): Promise<AppConfig> {
         }, () => reject("User rejected configuration dialog"))
             .setContent(document.getElementById("setup-form")!);
         let submitButton = document.getElementById("setup-form-submit") as HTMLButtonElement;
-        let ntfyHostInput = document.getElementById("setup-form-ntfy-host") as HTMLInputElement;
+        let ntfyUrlInput = document.getElementById("setup-form-ntfy-url") as HTMLInputElement;
         let ntfyTopicInput = document.getElementById("setup-form-ntfy-topic") as HTMLInputElement;
         submitButton.addEventListener("click", () => {
             prompt.close()
             resolve({
-                ntfy: new Ntfy(ntfyHostInput.value, ntfyTopicInput.value == "" ? undefined : ntfyTopicInput.value),
+                ntfy: new Ntfy(ntfyUrlInput.value, ntfyTopicInput.value == "" ? undefined : ntfyTopicInput.value),
                 isSharing: shareButton.classList.contains("selected")
             })
         })
@@ -62,8 +62,8 @@ export async function setupConfig(): Promise<AppConfig> {
     }
 
     // Retrieve auto-config parameters
-    let shareHost = autoConfigUrl?.searchParams?.get("host")
-    if (shareHost == null) shareHost = undefined
+    let shareUrl = autoConfigUrl?.searchParams?.get("url")
+    if (shareUrl == null) shareUrl = undefined
     let shareId = autoConfigUrl?.searchParams?.get("id")
     if (shareId == null) shareId = undefined
 
@@ -78,7 +78,7 @@ export async function setupConfig(): Promise<AppConfig> {
     let appConfig: AppConfig
     if (isSharing !== undefined) {
         appConfig = {
-            ntfy: new Ntfy(shareHost, shareId),
+            ntfy: new Ntfy(shareUrl, shareId),
             isSharing: isSharing
         }
     } else {

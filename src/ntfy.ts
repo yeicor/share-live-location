@@ -12,22 +12,22 @@ function randomTopic(size: number) {
 }
 
 export class Ntfy {
-    host: string;
+    url: URL;
     topic: string;
 
-    constructor(host: string = "https://ntfy.sh", topic: string = randomTopic(8)) {
-        this.host = host;
+    constructor(urlStr: string = "https://ntfy.sh", topic: string = randomTopic(8)) {
+        this.url = new URL(urlStr);
         this.topic = topic;
-        console.debug("NtfyShare initialized with host: ", this.host, " and id: ", this.topic)
+        console.debug("NtfyShare initialized with url: ", this.url, " and id: ", this.topic)
     }
 
     /**
-     * Publishes the given location to the server, which will then be shared with any clients that connect to the same Host + ID.
+     * Publishes the given location to the server, which will then be shared with any clients that connect to the same url + ID.
      * @param locEv The location to publish.
      */
     publish(locEv: MyLocationEvent) {
         let bodyJson = JSON.stringify(locEv)
-        let url = this.host + "/" + this.topic
+        let url = new URL(this.topic + this.url.search, this.url)
         console.log(url, "sending body of length", bodyJson.length);
         fetch(url, {method: "POST", body: bodyJson}).then((response) => {
             if (!response.ok) {
@@ -44,7 +44,9 @@ export class Ntfy {
     subscribe(callback: (locEv: MyLocationEvent, date: Date) => void): AbortController {
         // Fetch all cached (last day) messages and subscribe to new ones as they come in
         let abortController = new AbortController();
-        let url = this.host + "/" + this.topic + "/json?since=" + (Date.now() / 1000 - 24 * 60 * 60).toFixed(0);
+        let newSearchParams = new URLSearchParams(this.url.search)
+        newSearchParams.set("since", (Date.now() / 1000 - 24 * 60 * 60).toFixed(0))
+        let url = new URL(this.topic + "/json?" + newSearchParams.toString(), this.url)
         console.debug("Subscribing to: ", url);
         fetch(url, {signal: abortController.signal}).then((response) => {
             if (!response.ok) {

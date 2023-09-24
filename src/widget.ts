@@ -10,7 +10,7 @@ export function setupWidget(myMap: Map, appConfig: AppConfig) {
 
 
     let baseUrl = new URL(location.href);
-    baseUrl.hash = "#receive?id=" + appConfig.ntfy.topic + "&host=" + appConfig.ntfy.host;
+    baseUrl.hash = "#receive?id=" + appConfig.ntfy.topic + "&url=" + appConfig.ntfy.url;
     widgetLink.href = baseUrl.toString()
     if (appConfig.isSharing) {
         widgetStatus.innerText = "Sharing location...";

@@ -21,7 +21,7 @@ However, you can also [host your own ntfy instance](https://docs.ntfy.sh/install
 To share your location automatically whenever you start a trip recording in OsmAnd, follow these steps:
 
 1. Set Plugins > Trip Recording (enable it) > Settings > Online Tracking (enable it) > Web address to:
-    - `https://<ntfy-host>/<secret-topic>/publish?message=%7B%22latlng%22%3A%7B%22lat%22%3A{0}%2C%22lng%22%3A{1}%7D%2C%22timestamp%22%3A{2}%2C%22accuracy%22%3A{3}%2C%22altitude%22%3A{4}%2C%22speed%22%3A{5}%2C%22heading%22%3A{6}%7D`
+    - `<ntfy-url>/<secret-topic>/publish?message=%7B%22latlng%22%3A%7B%22lat%22%3A{0}%2C%22lng%22%3A{1}%7D%2C%22timestamp%22%3A{2}%2C%22accuracy%22%3A{3}%2C%22altitude%22%3A{4}%2C%22speed%22%3A{5}%2C%22heading%22%3A{6}%7D`
 
 You should increase the time between updates to avoid spamming the server.
 
