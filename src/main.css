@@ -87,8 +87,9 @@ body > #main-widget {
 }
 
 #main-widget {
-    background: white;
+    background: rgba(255, 255, 255, 0.5);
     padding: 10px;
+    font-size: 1.5em;
 }
 
 .text-muted {
