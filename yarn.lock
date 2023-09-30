@@ -851,10 +851,10 @@
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
   integrity sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==
 
-"@types/leaflet@^1.9.5":
-  version "1.9.5"
-  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.9.5.tgz#58523c2d611396692f8b46f51a3995d0177dd0f7"
-  integrity sha512-C+aD2/DueS+cVltMBPUHQPhgM99E3eXG4kw8/USIUxUxdqTiIGnifdDpnD/491CGsMzQ4bMvGtxUJBArFnhQSw==
+"@types/leaflet@^1.9.6":
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.9.6.tgz#d58ecdbe9f1f383cb0a7133a020cd05bfe00a762"
+  integrity sha512-HakGTK5LBBWegNWsAmTlG55zN1zszYec7aG47/z6SzT90bW2vqjmbqk3YKAbrtveO+G7fSTKTYqVbIwAFnTrbg==
   dependencies:
     "@types/geojson" "*"
 
