@@ -13,6 +13,7 @@ export function setupLocationListener(myMap: Map) {
     let trailPathPrevLoc: LatLng | null = null;
     myMap.addEventListener('locationfound', (e) => {
         console.debug("Received new location: ", e.latlng, e.accuracy);
+        // TODO: Improve performance when receiving lots of cached locations at once
 
         // Render latest location and accuracy
         [locCircle, accCircle].forEach((circle) => {

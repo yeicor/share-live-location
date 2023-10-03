@@ -14,7 +14,7 @@ export function setupApp(myMap: Map, appConfig: AppConfig) {
     } else {
         // Start receiving locations
         console.debug("Subscribing to location updates")
-        appConfig.ntfy.subscribe((locEv, _date) => {
+        appConfig.ntfy.subscribe(async (locEv, _date) => {
             myMap.fireEvent('locationfound', locEv);
         });
     }
