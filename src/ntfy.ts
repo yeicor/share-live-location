@@ -11,6 +11,11 @@ function randomTopic(size: number) {
     return id;
 }
 
+type MyLocationEventDate = {
+    locEv: MyLocationEvent,
+    date: Date,
+}
+
 export class Ntfy {
     url: URL;
     topic: string;
@@ -38,14 +43,41 @@ export class Ntfy {
     }
 
     /**
+     * Downloads old messages from the server, for batch processing.
+     */
+    download(sinceUnixSecs: string): Promise<MyLocationEventDate[]> {
+        return new Promise((resolve) => {
+            let buffer: MyLocationEventDate[] = [];
+            let subscription: EventSource | null = null;
+            let finish = () => {
+                if (subscription != null) {
+                    console.warn(subscription.readyState)
+                    subscription.close();
+                    resolve(buffer);
+                } else {
+                    setTimeout(finish, 1000)
+                }
+            };
+            let timeout = setTimeout(finish, 1000);
+            subscription = this.subscribe((locEv, date) => {
+                buffer.push({locEv, date});
+                clearTimeout(timeout);
+                timeout = setTimeout(finish, 1000);
+            }, sinceUnixSecs, false);
+        })
+    }
+
+    /**
      * Connects to the server and listens for any published locations.
      * @param callback The function to call when a location is published. The date should be very close to the timestamp in the LocationEvent.
+     * @param since Only receive messages that were published after this string (see ntfy docs)
+     * @param futureMessages Whether to listen for messages that are published in the future or only download old messages.
      */
-    subscribe(callback: (locEv: MyLocationEvent, date: Date) => void): AbortController {
+    subscribe(callback: (locEv: MyLocationEvent, date: Date) => void, since: string | null = "all", futureMessages: Boolean = true): EventSource {
         // Fetch all cached (last day) messages and subscribe to new ones as they come in
-        let abortController = new AbortController();
         let newSearchParams = new URLSearchParams(this.url.search)
-        newSearchParams.set("since", (Date.now() / 1000 - 24 * 60 * 60).toFixed(0))
+        if (since) newSearchParams.set("since", since)
+        if (!futureMessages) newSearchParams.set("poll", "1")
         let url = new URL(this.topic + "/sse?" + newSearchParams.toString(), this.url)
         console.debug("Subscribing to: ", url);
         const eventSource = new EventSource(url)
@@ -87,6 +119,6 @@ export class Ntfy {
                 console.debug("Ignoring ntfy event: ", event);
             }
         };
-        return abortController;
+        return eventSource
     }
 }
