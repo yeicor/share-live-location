@@ -19,8 +19,8 @@ export function setupApp(myMap: Map, appConfig: AppConfig) {
         appConfig.ntfy.download(subscribeSince).then((locEvDates) => {
             let maxInitialLocations = parseInt(new URL(location.href).searchParams.get("maxInitialLocations") ?? "100");
             if (locEvDates.length > maxInitialLocations) {
-                console.info("Downloaded " + locEvDates.length + " locations, but only showing the first (?maxInitialLocations=" + maxInitialLocations + ")");
-                alertify.warning("Downloaded " + locEvDates.length + " locations, but only showing the first " + maxInitialLocations);
+                console.info("Downloaded " + locEvDates.length + " locations, but only showing the last (?maxInitialLocations=" + maxInitialLocations + ")");
+                alertify.warning("Downloaded " + locEvDates.length + " locations, but only showing the last " + maxInitialLocations);
                 locEvDates = locEvDates.slice(locEvDates.length - maxInitialLocations);
             }
             console.debug("Showing the last " + locEvDates.length + " locations")
