@@ -45,7 +45,7 @@ export class Ntfy {
     /**
      * Downloads old messages from the server, for batch processing.
      */
-    download(sinceUnixSecs: string): Promise<MyLocationEventDate[]> {
+    download(since: string): Promise<MyLocationEventDate[]> {
         return new Promise((resolve) => {
             let buffer: MyLocationEventDate[] = [];
             let subscription: EventSource | null = null;
@@ -63,7 +63,7 @@ export class Ntfy {
                 buffer.push({locEv, date});
                 clearTimeout(timeout);
                 timeout = setTimeout(finish, 1000);
-            }, sinceUnixSecs, false);
+            }, since, false);
         })
     }
 
