@@ -15,7 +15,7 @@ jobs:
       - uses: "actions/setup-node@v4"
       - run: "yarn install"
       - run: "yarn build"
-      - uses: "actions/upload-pages-artifact@v2"
+      - uses: "actions/upload-pages-artifact@v3"
         with: { path: "dist" }
 
   deploy:
