@@ -14,7 +14,7 @@
     "build": "parcel build --public-url ./"
   },
   "dependencies": {
-    "alertifyjs": "^1.13.1",
+    "alertifyjs": "^1.14.0",
     "leaflet": "^1.9.4"
   },
   "devDependencies": {
